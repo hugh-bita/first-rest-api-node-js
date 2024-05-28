@@ -74,7 +74,7 @@ jobs:
         run: echo "$IMAGE_URL"
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -93,6 +93,6 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker tag $IMAGE_URL $ECR_REGISTRY/$IMAGE_URL
+          docker tag docker.io/library/$IMAGE_URL $ECR_REGISTRY/$IMAGE_URL
           docker push $ECR_REGISTRY/$IMAGE_URL
           echo "image=$ECR_REGISTRY/$IMAGE_URL" >> $GITHUB_OUTPUT
