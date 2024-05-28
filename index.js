@@ -16,3 +16,7 @@ app.get('/status', (request, response) => {
     
     response.send(status);
  });
+
+ app.get('/ping', (request, response) => {
+    response.send('pong');
+});
