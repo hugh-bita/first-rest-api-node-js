@@ -58,4 +58,14 @@ jobs:
         run: |
           # Build a docker container
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-          echo "::set-output name=image-url::$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "repository=$ECR_REPOSITORY:$IMAGE_TAG" >> "$GITHUB_ENV"
+
+  deploy:
+    name: Deploy to Amazon ECS
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Check image availability
+        run: |
+          printf '%s\n' "$repository"
