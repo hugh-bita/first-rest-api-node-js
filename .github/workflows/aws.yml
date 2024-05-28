@@ -48,18 +48,20 @@ jobs:
   build:
     name: Build new image
     runs-on: ubuntu-latest
-
+    outputs:
+      image_url: ${{ steps.build_image.outputs.repository_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Build image
+        id: build_image
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # Build a docker container
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-          echo "REPOSITORY_NAME=$ECR_REPOSITORY:$IMAGE_TAG" >> "$GITHUB_ENV"
+          echo "repository_name=$ECR_REPOSITORY:$IMAGE_TAG" >> "$GITHUB_ENV"
 
   deploy:
     name: Deploy to Amazon ECS
@@ -68,7 +70,6 @@ jobs:
 
     steps:
       - name: Print image availability
-        env:
-          REPOSITORY_NAME: ${{ env.REPOSITORY_NAME }}
         run: |
-          printf '%s\n' "$REPOSITORY_NAME"
+          IMAGE_URL=${{ needs.build.outputs.image_url }}
+          printf '%s\n' "$IMAGE_URL"
