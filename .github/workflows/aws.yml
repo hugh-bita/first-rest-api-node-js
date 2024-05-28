@@ -93,6 +93,6 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker tag abc $ECR_REGISTRY/$IMAGE_URL
+          docker tag docker.io/library/$IMAGE_URL $ECR_REGISTRY/$IMAGE_URL
           docker push $ECR_REGISTRY/$IMAGE_URL
           echo "image=$ECR_REGISTRY/$IMAGE_URL" >> $GITHUB_OUTPUT
